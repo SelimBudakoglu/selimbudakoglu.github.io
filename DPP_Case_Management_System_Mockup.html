@@ -1,37 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DPP Case Management System Mockup</title>
   <style>
+    /* Ensure full-viewport layout */
     html, body {
       height: 100%;
       margin: 0;
+    }
+
+    body {
       font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
     }
-    h2 {
-      margin: 20px;
+
+    header {
+      padding: 12px 20px;
+      background: #f8f8f8;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
     }
+
+    header h1 {
+      margin: 0;
+      font-size: 18px;
+    }
+
     .links {
-      margin: 0 20px 10px 20px;
+      margin-top: 8px;
     }
+
+    .links a {
+      text-decoration: none;
+      margin-right: 10px;
+    }
+
+    /* IMPORTANT: .content must be a flex child and set min-height: 0
+       so the iframe (which is 100% height) can properly fill the available space. */
+    .content {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: block;
+    }
+
     iframe {
-      flex-grow: 1;
       width: 100%;
-      border: none;
+      height: 100%;
+      border: 0;
+      display: block;
     }
   </style>
 </head>
 <body>
-  <h2>DPP Case Management System Mockup</h2>
+  <header>
+    <h1>DPP Case Management System Mockup</h1>
+    <div class="links">
+      <a href="https://akkila.net:1349/SEJC.UI/meetings" target="contentFrame">Meetings</a> |
+      <a href="https://akkila.net:1349/SEJC.UI/recordings" target="contentFrame">Recordings</a>
+    </div>
+  </header>
 
-  <div class="links">
-    <a href="https://akkila.net:1349/SEJC.UI/meetings" target="contentFrame">Meetings</a> | 
-    <a href="https://akkila.net:1349/SEJC.UI/recordings" target="contentFrame">Recordings</a>
+  <div class="content">
+    <!-- Preload Meetings by default so the iframe isn't blank on load -->
+    <iframe name="contentFrame" src="https://akkila.net:1349/SEJC.UI/meetings" title="Content Frame"></iframe>
   </div>
-
-  <iframe name="contentFrame" src="" title="Content Frame"></iframe>
 </body>
 </html>
