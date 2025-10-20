@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DPP Case Management System Mockup</title>
   <style>
-    /* Ensure full-viewport layout */
     html, body {
       height: 100%;
       margin: 0;
@@ -37,8 +36,32 @@
       margin-right: 10px;
     }
 
-    /* IMPORTANT: .content must be a flex child and set min-height: 0
-       so the iframe (which is 100% height) can properly fill the available space. */
+    .params {
+      background: #f0f0f0;
+      padding: 10px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .params label {
+      font-size: 14px;
+      margin-right: 4px;
+    }
+
+    .params input {
+      padding: 4px;
+      font-size: 14px;
+      width: 100px;
+    }
+
+    .params button {
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
     .content {
       flex: 1 1 auto;
       min-height: 0;
@@ -58,16 +81,44 @@
     <h1>DPP Case Management System Mockup</h1>
     <div class="links">
       <a href="https://akkila.net:1349/SEJC.UI/meetings" target="contentFrame">Meetings Module</a> |
-      <a href="https://akkila.net:1349/SEJC.UI/recordings" target="contentFrame">Recordings Module</a> |
-      <a href="https://akkila.net:1349/SEJC.UI/iframe/scheduler?CaseNumber=1&CaseSourceCode=2&CaseSourceNumber=1&CaseSourceTypeCode=2&CaseSourceYear=2025&CaseTypeCode=502&CaseYear=2025" target="contentFrame">Schedule Meeting</a> | 
-      <a href="https://akkila.net:1349/SEJC.UI/iframe/meeting?CaseNumber=1CaseSourceCode=2&CaseSourceNumber=1&CaseSourceTypeCode=2&CaseSourceYear=2025&CaseTypeCode=502&CaseYear=2025" target="contentFrame">Meetings</a> | 
-      <a href="https://akkila.net:1349/SEJC.UI/iframe/recording?CaseNumber=1CaseSourceCode=2&CaseSourceNumber=1&CaseSourceTypeCode=2&CaseSourceYear=2025&CaseTypeCode=502&CaseYear=2025" target="contentFrame">Recordings</a>
+      <a href="https://akkila.net:1349/SEJC.UI/recordings" target="contentFrame">Recordings Module</a>
     </div>
   </header>
 
+  <div class="params">
+    <label>Case Number:</label><input type="text" id="caseNumber" value="1">
+    <label>Case Source Code:</label><input type="text" id="caseSourceCode" value="2">
+    <label>Case Source Number:</label><input type="text" id="caseSourceNumber" value="1">
+    <label>Case Source Type Code:</label><input type="text" id="caseSourceTypeCode" value="2">
+    <label>Case Source Year:</label><input type="text" id="caseSourceYear" value="2025">
+    <label>Case Type Code:</label><input type="text" id="caseTypeCode" value="502">
+    <label>Case Year:</label><input type="text" id="caseYear" value="2025">
+    <button onclick="loadIframe('scheduler')">Schedule Meeting</button>
+    <button onclick="loadIframe('meeting')">Meetings</button>
+    <button onclick="loadIframe('recording')">Recordings</button>
+  </div>
+
   <div class="content">
-    <!-- Preload Meetings by default so the iframe isn't blank on load -->
     <iframe name="contentFrame" src="https://akkila.net:1349/SEJC.UI/meetings" title="Content Frame"></iframe>
   </div>
+
+  <script>
+    function loadIframe(type) {
+      const params = {
+        CaseNumber: document.getElementById('caseNumber').value,
+        CaseSourceCode: document.getElementById('caseSourceCode').value,
+        CaseSourceNumber: document.getElementById('caseSourceNumber').value,
+        CaseSourceTypeCode: document.getElementById('caseSourceTypeCode').value,
+        CaseSourceYear: document.getElementById('caseSourceYear').value,
+        CaseTypeCode: document.getElementById('caseTypeCode').value,
+        CaseYear: document.getElementById('caseYear').value
+      };
+
+      const query = new URLSearchParams(params).toString();
+      const iframe = document.querySelector('iframe');
+
+      iframe.src = `https://akkila.net:1349/SEJC.UI/iframe/${type}?${query}`;
+    }
+  </script>
 </body>
 </html>
