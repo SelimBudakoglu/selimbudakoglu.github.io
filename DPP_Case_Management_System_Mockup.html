@@ -5,88 +5,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>DPP Case Management System Mockup</title>
   <style>
+    :root {
+      --cms-primary: #5088A4;
+      --cms-primary-light: #8AB2C6;
+      --cms-primary-dark: #325566;
+      --cms-accent: #505EA4;
+      --cms-bg: #F6F8F9;
+      --cms-surface: #FFFFFF;
+      --cms-muted: #7A7A7A;
+      --text-on-primary: #FFFFFF;
+      --text-primary-dark: #0E1B22;
+    }
+
     html, body {
       height: 100%;
       margin: 0;
-    }
-
-    body {
       font-family: Arial, sans-serif;
+      background: var(--cms-bg);
+      color: var(--text-primary-dark);
       display: flex;
       flex-direction: column;
     }
 
     header {
-      padding: 12px 20px;
-      background: #f8f8f8;
+      background: linear-gradient(180deg, var(--cms-primary), var(--cms-primary-dark));
+      color: var(--text-on-primary);
+      padding: 16px 20px;
       box-shadow: 0 1px 0 rgba(0,0,0,0.05);
     }
 
     header h1 {
-      margin: 0;
-      font-size: 18px;
-    }
-
-    .links {
-      margin-top: 8px;
+      margin: 0 0 8px 0;
+      font-size: 20px;
     }
 
     .links a {
+      color: var(--text-on-primary);
       text-decoration: none;
-      margin-right: 10px;
-      color: #0072a3;
-      cursor: pointer;
+      margin-right: 15px;
+      font-weight: 500;
     }
 
     .links a:hover {
       text-decoration: underline;
     }
 
-    .params {
-      background: #f0f0f0;
-      padding: 10px 20px;
-      display: none; /* hidden by default */
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .params label {
-      font-size: 14px;
-      margin-right: 4px;
-    }
-
-    .params input {
-      padding: 4px;
-      font-size: 14px;
-      width: 100px;
-    }
-
-    .params button {
-      padding: 6px 12px;
-      font-size: 14px;
-      cursor: pointer;
-      background: #0072a3;
-      color: white;
-      border: none;
-      border-radius: 4px;
-    }
-
-    .params button:hover {
-      background: #005f85;
-    }
-
     .content {
       flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
       min-height: 0;
-      display: block;
     }
 
     iframe {
       width: 100%;
-      height: 100%;
+      flex-grow: 1;
       border: 0;
-      display: block;
+    }
+
+    /* Input Panel Styling */
+    .param-panel {
+      background: var(--cms-surface);
+      border-top: 1px solid var(--cms-primary-light);
+      padding: 10px 20px;
+      display: none;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .param-panel label {
+      font-weight: 600;
+      font-size: 13px;
+      margin-right: 5px;
+    }
+
+    .param-panel input {
+      padding: 5px;
+      border: 1px solid var(--cms-primary-light);
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    .param-panel button {
+      background: var(--cms-primary);
+      color: var(--text-on-primary);
+      border: none;
+      border-radius: 5px;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+
+    .param-panel button:hover {
+      background: var(--cms-primary-dark);
     }
   </style>
 </head>
@@ -94,66 +105,64 @@
   <header>
     <h1>DPP Case Management System Mockup</h1>
     <div class="links">
-      <a onclick="loadModule('https://akkila.net:1349/SEJC.UI/meetings')">Meetings Module</a> |
-      <a onclick="loadModule('https://akkila.net:1349/SEJC.UI/recordings')">Recordings Module</a> |
-      <a onclick="loadIframe('scheduler')">Schedule Meeting</a> |
-      <a onclick="loadIframe('meeting')">Meetings</a> |
-      <a onclick="loadIframe('recording')">Recordings</a>
+      <a href="#" data-url="https://akkila.net:1349/SEJC.UI/meetings" data-params="false">Meetings Module</a> |
+      <a href="#" data-url="https://akkila.net:1349/SEJC.UI/recordings" data-params="false">Recordings Module</a> |
+      <a href="#" data-url="https://akkila.net:1349/SEJC.UI/iframe/scheduler" data-params="true">Schedule Meeting</a> |
+      <a href="#" data-url="https://akkila.net:1349/SEJC.UI/iframe/meeting" data-params="true">Meetings</a> |
+      <a href="#" data-url="https://akkila.net:1349/SEJC.UI/iframe/recording" data-params="true">Recordings</a>
     </div>
   </header>
 
-  <div class="params" id="params">
-    <label>Case Number:</label><input type="text" id="caseNumber" value="1">
-    <label>Case Source Code:</label><input type="text" id="caseSourceCode" value="2">
-    <label>Case Source Number:</label><input type="text" id="caseSourceNumber" value="1">
-    <label>Case Source Type Code:</label><input type="text" id="caseSourceTypeCode" value="2">
-    <label>Case Source Year:</label><input type="text" id="caseSourceYear" value="2025">
-    <label>Case Type Code:</label><input type="text" id="caseTypeCode" value="502">
-    <label>Case Year:</label><input type="text" id="caseYear" value="2025">
-    <button onclick="manualLoad()">Load Manually</button>
+  <div class="param-panel" id="paramPanel">
+    <label>CaseNumber:</label><input type="text" id="caseNumber" value="1">
+    <label>CaseSourceCode:</label><input type="text" id="caseSourceCode" value="2">
+    <label>CaseSourceNumber:</label><input type="text" id="caseSourceNumber" value="1">
+    <label>CaseSourceTypeCode:</label><input type="text" id="caseSourceTypeCode" value="2">
+    <label>CaseSourceYear:</label><input type="text" id="caseSourceYear" value="2025">
+    <label>CaseTypeCode:</label><input type="text" id="caseTypeCode" value="502">
+    <label>CaseYear:</label><input type="text" id="caseYear" value="2025">
+    <button id="loadBtn">Load</button>
   </div>
 
   <div class="content">
-    <iframe name="contentFrame" id="iframe" src="https://akkila.net:1349/SEJC.UI/meetings" title="Content Frame"></iframe>
+    <iframe name="contentFrame" id="contentFrame" src="https://akkila.net:1349/SEJC.UI/meetings" title="Content Frame"></iframe>
   </div>
 
   <script>
-    const paramsSection = document.getElementById('params');
-    const iframe = document.getElementById('iframe');
+    const links = document.querySelectorAll('.links a');
+    const iframe = document.getElementById('contentFrame');
+    const panel = document.getElementById('paramPanel');
+    const loadBtn = document.getElementById('loadBtn');
 
-    function getParams() {
-      return {
-        CaseNumber: document.getElementById('caseNumber').value,
-        CaseSourceCode: document.getElementById('caseSourceCode').value,
-        CaseSourceNumber: document.getElementById('caseSourceNumber').value,
-        CaseSourceTypeCode: document.getElementById('caseSourceTypeCode').value,
-        CaseSourceYear: document.getElementById('caseSourceYear').value,
-        CaseTypeCode: document.getElementById('caseTypeCode').value,
-        CaseYear: document.getElementById('caseYear').value
-      };
-    }
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const url = link.getAttribute('data-url');
+        const needsParams = link.getAttribute('data-params') === 'true';
 
-    function loadModule(url) {
-      paramsSection.style.display = 'none'; // hide params
-      iframe.src = url;
-    }
+        if (needsParams) {
+          panel.style.display = 'flex';
+          loadBtn.onclick = () => {
+            const params = new URLSearchParams({
+              CaseNumber: document.getElementById('caseNumber').value,
+              CaseSourceCode: document.getElementById('caseSourceCode').value,
+              CaseSourceNumber: document.getElementById('caseSourceNumber').value,
+              CaseSourceTypeCode: document.getElementById('caseSourceTypeCode').value,
+              CaseSourceYear: document.getElementById('caseSourceYear').value,
+              CaseTypeCode: document.getElementById('caseTypeCode').value,
+              CaseYear: document.getElementById('caseYear').value
+            }).toString();
+            iframe.src = `${url}?${params}`;
+          };
 
-    function loadIframe(type) {
-      const query = new URLSearchParams(getParams()).toString();
-      paramsSection.style.display = 'flex'; // show params
-      iframe.src = `https://akkila.net:1349/SEJC.UI/iframe/${type}?${query}`;
-    }
-
-    function manualLoad() {
-      const src = iframe.src;
-      const typeMatch = src.match(/iframe\/(\w+)/);
-      if (typeMatch) {
-        const type = typeMatch[1];
-        loadIframe(type);
-      } else {
-        alert("Please select a page (e.g., Schedule Meeting, Meetings, or Recordings) first.");
-      }
-    }
+          // auto-load with defaults
+          loadBtn.click();
+        } else {
+          panel.style.display = 'none';
+          iframe.src = url;
+        }
+      });
+    });
   </script>
 </body>
 </html>
