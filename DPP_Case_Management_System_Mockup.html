@@ -45,7 +45,7 @@
     .params {
       background: #f0f0f0;
       padding: 10px 20px;
-      display: flex;
+      display: none; /* hidden by default */
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
@@ -94,15 +94,15 @@
   <header>
     <h1>DPP Case Management System Mockup</h1>
     <div class="links">
-      <a href="https://akkila.net:1349/SEJC.UI/meetings" target="contentFrame">Meetings Module</a> |
-      <a href="https://akkila.net:1349/SEJC.UI/recordings" target="contentFrame">Recordings Module</a> |
+      <a onclick="loadModule('https://akkila.net:1349/SEJC.UI/meetings')">Meetings Module</a> |
+      <a onclick="loadModule('https://akkila.net:1349/SEJC.UI/recordings')">Recordings Module</a> |
       <a onclick="loadIframe('scheduler')">Schedule Meeting</a> |
       <a onclick="loadIframe('meeting')">Meetings</a> |
       <a onclick="loadIframe('recording')">Recordings</a>
     </div>
   </header>
 
-  <div class="params">
+  <div class="params" id="params">
     <label>Case Number:</label><input type="text" id="caseNumber" value="1">
     <label>Case Source Code:</label><input type="text" id="caseSourceCode" value="2">
     <label>Case Source Number:</label><input type="text" id="caseSourceNumber" value="1">
@@ -118,6 +118,9 @@
   </div>
 
   <script>
+    const paramsSection = document.getElementById('params');
+    const iframe = document.getElementById('iframe');
+
     function getParams() {
       return {
         CaseNumber: document.getElementById('caseNumber').value,
@@ -130,14 +133,18 @@
       };
     }
 
+    function loadModule(url) {
+      paramsSection.style.display = 'none'; // hide params
+      iframe.src = url;
+    }
+
     function loadIframe(type) {
       const query = new URLSearchParams(getParams()).toString();
-      document.getElementById('iframe').src = `https://akkila.net:1349/SEJC.UI/iframe/${type}?${query}`;
+      paramsSection.style.display = 'flex'; // show params
+      iframe.src = `https://akkila.net:1349/SEJC.UI/iframe/${type}?${query}`;
     }
 
     function manualLoad() {
-      // Reload the current iframe URL with updated parameters
-      const iframe = document.getElementById('iframe');
       const src = iframe.src;
       const typeMatch = src.match(/iframe\/(\w+)/);
       if (typeMatch) {
